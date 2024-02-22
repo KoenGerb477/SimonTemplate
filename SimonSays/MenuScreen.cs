@@ -24,6 +24,7 @@ namespace SimonSays
         float startAngle;
         float spinSpeed = 3;
         int colour = 0;
+        const int gift = 400; // gift from saahil patel :)
 
         Pen greenPen = new Pen(Color.DarkGreen, 100);
         Pen redPen = new Pen(Color.DarkRed, 100);
@@ -31,6 +32,9 @@ namespace SimonSays
         Pen yellowPen = new Pen(Color.Goldenrod, 100);
 
         Pen[] pens = new Pen[4];
+
+        List<Point> cloudList = new List<Point>();
+        List<int> cloudSpeedList = new List<int>();
 
         public MenuScreen()
         {
@@ -64,13 +68,36 @@ namespace SimonSays
 
         private void MenuScreen_Paint(object sender, PaintEventArgs e)
         {
+            //clouds
+            SolidBrush cloudColor = new SolidBrush(Color.LightGray);
+            int cloudSize = 50;
+            for (int i = 0; i < cloudList.Count; i++)
+            {
+                e.Graphics.FillEllipse(cloudColor, cloudList[i].X, cloudList[i].Y, cloudSize, cloudSize);
+                e.Graphics.FillEllipse(cloudColor, cloudList[i].X + 40, cloudList[i].Y, cloudSize + 20, cloudSize + 20);
+                e.Graphics.FillEllipse(cloudColor, cloudList[i].X + 90, cloudList[i].Y, cloudSize, cloudSize);
+                e.Graphics.FillEllipse(cloudColor, cloudList[i].X + 50, cloudList[i].Y + 20, cloudSize + 20, cloudSize + 20);
+                e.Graphics.FillEllipse(cloudColor, cloudList[i].X + 80, cloudList[i].Y + 20, cloudSize, cloudSize);
+                e.Graphics.FillEllipse(cloudColor, cloudList[i].X + 30, cloudList[i].Y + 40, cloudSize, cloudSize);
+                e.Graphics.FillEllipse(cloudColor, cloudList[i].X + 60, cloudList[i].Y + 40, cloudSize + 20, cloudSize + 20);
+                e.Graphics.FillEllipse(cloudColor, cloudList[i].X + 90, cloudList[i].Y + 40, cloudSize, cloudSize);
+            }
+
+            //simon things
             leftX = origin.X + 5;
             rightX = origin.X + 25;
             topY = origin.Y + 5;
             bottomY = origin.Y + 25;
 
+            //back color
             e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(colour,0,0,0)), new Rectangle(0,0,this.Width,this.Height));
 
+            //simon things
+            leftX = origin.X + 5;
+            rightX = origin.X + 25;
+            topY = origin.Y + 5;
+            bottomY = origin.Y + 25;
+            
             e.Graphics.DrawArc(greenPen, leftX, topY, size, size, startAngle + 178, 94);
             e.Graphics.DrawArc(redPen, rightX, topY, size, size, startAngle + 268, 94);
             e.Graphics.DrawArc(bluePen, rightX, bottomY, size, size, startAngle + 358, 94);
@@ -143,6 +170,42 @@ namespace SimonSays
                 this.Refresh();
                 Thread.Sleep(20);
             }
+        }
+
+        private void cloudTimer_Tick(object sender, EventArgs e)
+        {
+            Random random = new Random();
+            //make new clouds
+            int randNum = random.Next(1, 201);
+            if (randNum > 199)
+            {
+                int y = random.Next(-100, this.Height);
+                int x = -200;
+
+                Point cloud = new Point(x, y);
+                cloudList.Add(cloud);
+                cloudSpeedList.Add(random.Next(1, 3));
+            }
+
+            //move stars
+            for (int i = 0; i < cloudList.Count; i++)
+            {
+                int x = cloudList[i].X + cloudSpeedList[i];
+                int y = cloudList[i].Y;
+                cloudList[i] = new Point(x, y);
+            }
+
+            //delete stars
+            for (int i = 0; i < cloudList.Count; i++)
+            {
+                if ((cloudList[i].X > this.Width))
+                {
+                    cloudList.RemoveAt(i);
+                    cloudSpeedList.RemoveAt(i);
+                }
+            }
+
+            this.Refresh();
         }
     }
 }

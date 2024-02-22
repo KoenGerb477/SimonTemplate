@@ -25,7 +25,7 @@ namespace SimonSays
         //TODO: create an int guess variable to track what part of the pattern the user is at
         int guess;
 
-        const int DELAY_TIME = 50;
+        const int DELAY_TIME = 30;
 
         //arrays
         Color[] secondColorArray = { Color.LawnGreen, Color.Red, Color.Blue, Color.Yellow };

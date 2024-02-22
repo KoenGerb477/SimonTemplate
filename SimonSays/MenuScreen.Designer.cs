@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.exitButton = new System.Windows.Forms.Button();
             this.newButton = new System.Windows.Forms.Button();
+            this.cloudTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // exitButton
@@ -70,6 +72,12 @@
             this.newButton.UseVisualStyleBackColor = false;
             this.newButton.Click += new System.EventHandler(this.newButton_Click);
             // 
+            // cloudTimer
+            // 
+            this.cloudTimer.Enabled = true;
+            this.cloudTimer.Interval = 20;
+            this.cloudTimer.Tick += new System.EventHandler(this.cloudTimer_Tick);
+            // 
             // MenuScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -90,5 +98,6 @@
 
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Button newButton;
+        private System.Windows.Forms.Timer cloudTimer;
     }
 }
